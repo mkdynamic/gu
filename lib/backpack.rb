@@ -6,9 +6,14 @@ require 'xmlsimple'
 
 class Backpack
   attr_accessor :username, :token, :current_page_id
+  
+  def self.interface
+    @@interface ||= Backpack.new
+  end
 
-  def initialize(username, token)
-    @username, @token = username, token
+  def initialize
+    config = YAML::load_file(Merb.root_path('config/backpack.yml'))
+    @username, @token = config['username'], config['token']
     connect
   end
 
