@@ -47,7 +47,28 @@ class Page
   def widgets
     @widgets ||= load_widgets
   end
+  
+  def slug
+    title.downcase.gsub(/[^A-Za-z0-9]/, ' ').strip.gsub(/\s+/, '-')
+  end
 
+  def path(rel = [])
+    if parent == nil
+      path = '/' 
+      unless rel.empty?
+        rel = [slug] + rel
+        path << rel.join('/') + ext
+      end
+      return path
+    else
+      parent.path([slug] + rel)
+    end
+  end
+  
+  def ext
+    '.html'
+  end
+  
   private
 
   # backpack data loaders  
@@ -60,7 +81,7 @@ class Page
     bp_title = bp_data['page'].first['title']
     trail = bp_title.split('>')
     trail.pop # remove this page title
-    Page.find_by_trail(trail.join('>'))
+    Page.find_by_trail(trail.join('>').strip)
   end
   
   def load_children
