@@ -1,7 +1,7 @@
 class Page
   
-  attr_accessor :id, :title, 
-  attr_accessor :tags, :widgets, :parent
+  attr_accessor :id, :title
+  attr_accessor :tags, :widgets, :parent, :children
   attr_accessor :bp_data
   
   class << self
@@ -12,11 +12,15 @@ class Page
     
     def find_by_trail(trail)
       pages = Backpack.interface.list_pages['pages'].first['page']
-      if (p = pages.find { |p| p['title'].strip == trail })
-        Page.find(p['id'].to_i)
-      else
-        return nil
-      end
+      p = pages.find { |p| p['title'] == trail }
+      return (p ? Page.find(p['id'].to_i) : nil)
+    end
+    
+    def find_children_by_trail(trail)
+      pages = Backpack.interface.list_pages['pages'].first['page']
+      r = /^#{trail}\s+>\s+[^>]+$/
+      children = pages.select { |p| p['title'].match(r) }
+      return children.map { |c| Page.find(c['id'].to_i) }     
     end
   end
   
@@ -25,26 +29,69 @@ class Page
   end
   
   def title
-    load_title unless @title
-    @title
+    @title ||= load_title
   end
   
   def parent
-    load_parent unless @parent
-    @parent
+    @parent ||= load_parent
   end
   
-  # backpack data loaders
+  def children
+    @children ||= load_children
+  end
+  
+  def tags
+    @tags ||= load_tags
+  end 
+  
+  def widgets
+    @widgets ||= load_widgets
+  end
+
+  private
+
+  # backpack data loaders  
   def load_title
     bp_title = bp_data['page'].first['title']
-    @title = bp_title.split('>').last.strip
+    bp_title.split('>').last.strip
   end
   
   def load_parent
     bp_title = bp_data['page'].first['title']
     trail = bp_title.split('>')
     trail.pop # remove this page title
-    @parent = Page.find_by_trail(trail.join('>').strip)
+    Page.find_by_trail(trail.join('>'))
+  end
+  
+  def load_children
+    bp_title = bp_data['page'].first['title']
+    Page.find_children_by_trail(bp_title)    
+  end
+  
+  def load_tags
+    if (tags = bp_data['page'].first['tags'])
+      tags.first['tag'].map { |t| t['name'] }
+    else
+      return []
+    end
+  end
+  
+  def load_widgets
+    arr = []
+    if (widgets = bp_data['page'].first['belongings'])
+      widgets.first['belonging'].each do |w|
+        id = w['widget'].first['id'].to_i
+        type = w['widget'].first['type']
+        unless type == 'WriteboardLink'
+          bp_widget = bp_data['page'].first[type.downcase.pluralize].first[type.downcase].find { |i| i['id'].to_i == id }
+        else
+          bp_widget = nil
+        end
+        klass = Extlib::Inflection.constantize(type)
+        arr << klass.new(id, bp_widget)
+      end
+    end
+    return arr
   end
   
 end
