@@ -1,0 +1,43 @@
+<h1><%=textilize @page.title %></h1>
+
+<% @page.widgets.each do |w| %>
+	<% if w.class == Note %>
+		<% unless w.title.blank? %>
+			<h2><%=textilize w.title %></h2>
+		<% end %>
+		<%=textilize w.content %>
+	<% elsif w.class == Attachment %>
+		<a href="<%= w.url %>">
+			<%=h w.filename %>
+		</a>
+	<% elsif w.class == Gallery %>
+		<% unless w.name.blank? %>
+			<h2><%=textilize w.name %></h2>
+		<% end %>		
+		<ul class="gallery">
+			<% w.images.each do |image| %>
+			<li>
+				<a href="<%= image.url %>">
+					<img src="<%= image.url(:thumbnail) %>" 
+						alt="<%=h image.description %>" />
+				</a>
+			</li>
+			<% end %>
+		</ul>
+	<% elsif w.class == Separator %>
+		<h2 class="separator">
+			<%=textilize w.content %>
+		</h2>
+	<% elsif w.class == List %>
+		<% unless w.name.blank? %>
+			<h2><%=textilize w.name %></h2>
+		<% end %>		
+		<ul>
+			<% w.items.each do |item| %>
+			<li><%=textilize item.content %></li>
+			<% end %>
+		</ul>
+	<% elsif w.class == WriteboardLink %>
+		<h2 class="writeboard">Writeboard Link</h2>
+	<% end %>
+<% end %>

@@ -10,6 +10,16 @@ class Page
       Page.new(id, bp_data)
     end
     
+    def home
+      Page.find_by_trail('Home')
+    end
+    
+    def find_by_path(path)
+      pages = Backpack.interface.list_pages['pages'].first['page']
+      p = pages.find { |p| ('/' + p['title'].split('>').map { |s| Page.to_slug(s) }.join('/') + Page.ext) == path }
+      return (p ? Page.find(p['id'].to_i) : nil)      
+    end
+    
     def find_by_trail(trail)
       pages = Backpack.interface.list_pages['pages'].first['page']
       p = pages.find { |p| p['title'] == trail }
@@ -49,7 +59,10 @@ class Page
   end
   
   def slug
-    title.downcase.gsub(/[^A-Za-z0-9]/, ' ').strip.gsub(/\s+/, '-')
+    Page.to_slug(title)
+  end
+  def self.to_slug(str)
+    str.downcase.gsub(/[^A-Za-z0-9]/, ' ').strip.gsub(/\s+/, '-')
   end
 
   def path(rel = [])
@@ -57,7 +70,7 @@ class Page
       path = '/' 
       unless rel.empty?
         rel = [slug] + rel
-        path << rel.join('/') + ext
+        path << rel.join('/') + Page.ext
       end
       return path
     else
@@ -65,7 +78,7 @@ class Page
     end
   end
   
-  def ext
+  def self.ext
     '.html'
   end
   
@@ -103,6 +116,7 @@ class Page
       widgets.first['belonging'].each do |w|
         id = w['widget'].first['id'].to_i
         type = w['widget'].first['type']
+        type = 'Attachment' if type == 'Asset'
         unless type == 'WriteboardLink'
           bp_widget = bp_data['page'].first[type.downcase.pluralize].first[type.downcase].find { |i| i['id'].to_i == id }
         else
