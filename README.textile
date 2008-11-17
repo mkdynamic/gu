@@ -7,7 +7,7 @@ Copyright 2008 Mark Dodwell and mkdynamic.
 h2. Idea
 
 The basic idea of this little merb app is to allow you to use "37signals' 
-Backpack"":http://www.backpackit.com to act as a simple CMS for your website.
+Backpack":http://www.backpackit.com to act as a simple CMS for your website.
 
 It's really aimed at really simple websites, where a full blown CMS
 would be overkill. Plus, it takes advantage of functionality already 
@@ -40,7 +40,7 @@ hopefully it will evolve into something useful in not too much time.
 
 I welcome any patches or ideas, here's the lighthouse page:
 
-* http://mkdynamic.lighthouseapp.com/projects/20044-gu:"http://mkdynamic.lighthouseapp.com/projects/20044-gu"
+* "http://mkdynamic.lighthouseapp.com/projects/20044-gu":http://mkdynamic.lighthouseapp.com/projects/20044-gu
 
 Enjoy!
 
