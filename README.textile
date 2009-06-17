@@ -33,6 +33,12 @@ strict naming conventions for your Backpack pages in order for this to work.
 
 NB. You must all make all pages you wish to use public in Backpack.
 
+h2. Caching
+
+Currently the pages are simply cached using Rails built in page caching.
+You have to invalidate the cache manually at the moment, but ideally this 
+could be done automatically by polling Backpack and checking for changes.
+
 h2. More Information
 
 This project is very new, and currently contains no tests, so please do 
