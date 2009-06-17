@@ -122,7 +122,7 @@ class Page
         else
           bp_widget = nil
         end
-        klass = Extlib::Inflection.constantize(type)
+        klass = type.constantize
         arr << klass.new(id, bp_widget)
       end
     end

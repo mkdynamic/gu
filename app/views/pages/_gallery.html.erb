@@ -1,0 +1,14 @@
+<% unless gallery.name.blank? %>
+<h2><%=textilize gallery.name %></h2>
+<% end %>		
+
+<ul class="gallery">
+	<% gallery.images.each do |image| %>
+	<li>
+		<a href="<%= image.url %>">
+			<img src="<%= image.url(:thumbnail) %>" 
+			alt="<%=h image.description %>" />
+		</a>
+	</li>
+	<% end %>
+</ul>

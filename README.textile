@@ -1,12 +1,12 @@
-h1. gu - A simple way to use Backpack as a CMS. Written in merb!
+h1. gu - A simple way to use Backpack as a CMS. 
 
 Written by Mark Dodwell, "mkdynamic":http://www.mkdynamic.co.uk.
 
-Copyright 2008 Mark Dodwell and mkdynamic.
+Copyright 2009 Mark Dodwell and mkdynamic.
 
 h2. Idea
 
-The basic idea of this little merb app is to allow you to use "37signals' 
+The basic idea of this little rails app is to allow you to use "37signals' 
 Backpack":http://www.backpackit.com to act as a simple CMS for your website.
 
 It's really aimed at really simple websites, where a full blown CMS
@@ -35,13 +35,12 @@ NB. You must all make all pages you wish to use public in Backpack.
 
 h2. More Information
 
-This project is very new, and currently contains no tests (naughty!) but 
-hopefully it will evolve into something useful in not too much time.
+This project is very new, and currently contains no tests, so please do 
+fork it and add some.
 
 I welcome any patches or ideas, here's the lighthouse page:
 
 * "http://mkdynamic.lighthouseapp.com/projects/20044-gu":http://mkdynamic.lighthouseapp.com/projects/20044-gu
 
 Enjoy!
-
 

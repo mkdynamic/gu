@@ -1,33 +1,22 @@
----
-# This is a sample database file for the DataMapper ORM
-development: &defaults
-  # These are the settings for repository :default
-  adapter:  sqlite3
-  database: db/development.db
- 
-  # Add more repositories
-  # repositories:
-  #   repo1:
-  #     adapter:  sqlite3
-  #     database: sample_1_development.db
-  #   repo2:
-  #     ...
- 
+# SQLite version 3.x
+#   gem install sqlite3-ruby (not necessary on OS X Leopard)
+development:
+  adapter: sqlite3
+  database: db/development.sqlite3
+  pool: 5
+  timeout: 5000
+
+# Warning: The database defined as "test" will be erased and
+# re-generated from your development database when you run "rake".
+# Do not set this db to the same as development or production.
 test:
-  <<:       *defaults
-  database: db/test.db
- 
-  # repositories:
-  #   repo1:
-  #     database: sample_1_test.db
- 
+  adapter: sqlite3
+  database: db/test.sqlite3
+  pool: 5
+  timeout: 5000
+
 production:
-  <<:       *defaults
-  database: db/production.db
- 
-  # repositories:
-  #   repo1:
-  #     database: sample_production.db
- 
-rake:
-  <<: *defaults
+  adapter: sqlite3
+  database: db/production.sqlite3
+  pool: 5
+  timeout: 5000

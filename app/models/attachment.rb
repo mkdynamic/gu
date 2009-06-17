@@ -1,4 +1,3 @@
-require 'widget'
 class Attachment < Widget
   
   attr_accessor :filename

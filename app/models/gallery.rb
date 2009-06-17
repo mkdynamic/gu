@@ -1,4 +1,3 @@
-require 'widget'
 class Gallery < Widget
   
   attr_accessor :name

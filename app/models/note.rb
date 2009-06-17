@@ -1,4 +1,3 @@
-require 'widget'
 class Note < Widget
   
   attr_accessor :title

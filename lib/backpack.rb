@@ -12,7 +12,8 @@ class Backpack
   end
 
   def initialize
-    config = YAML::load_file(Merb.root_path('config/backpack.yml'))
+    path = File.join(RAILS_ROOT, 'config/backpack.yml')
+    config = YAML::load_file(path)
     @username, @token = config['username'], config['token']
     connect
   end

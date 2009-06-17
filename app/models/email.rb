@@ -1,0 +1,3 @@
+class Email < Widget
+  
+end

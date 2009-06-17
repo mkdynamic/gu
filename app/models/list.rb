@@ -1,4 +1,3 @@
-require 'widget'
 class List < Widget
   
   attr_accessor :name
