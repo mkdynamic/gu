@@ -42,11 +42,7 @@ could be done automatically by polling Backpack and checking for changes.
 h2. More Information
 
 This project is very new, and currently contains no tests, so please do 
-fork it and add some.
+fork it and add some. 
 
-I welcome any patches or ideas, here's the lighthouse page:
-
-* "http://mkdynamic.lighthouseapp.com/projects/20044-gu":http://mkdynamic.lighthouseapp.com/projects/20044-gu
-
-Enjoy!
+I welcome any patches or ideas. Enjoy!
 
