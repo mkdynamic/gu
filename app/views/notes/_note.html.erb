@@ -1,0 +1,5 @@
+<% if note.title.present? %>
+<h2><%= textilize_without_paragraph note.title %></h2>
+<% end %>
+
+<%= linkify_and_textilize note.content %>

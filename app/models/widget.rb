@@ -8,7 +8,7 @@ class Widget
   end
   
   def content
-    @content || load_content
+    @content ||= load_content
   end
   
   protected

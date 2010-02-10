@@ -1,5 +1,2 @@
-<h1><%=textilize @page.title %></h1>
 
-<% @page.widgets.each do |widget| %>
-	<%= render :partial => widget.class.name.downcase, :object => widget %>
-<% end %>
+<%= render @page.widgets %>

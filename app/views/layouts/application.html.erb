@@ -1,18 +1,69 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" 
+	"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us">
-  <head>
-    <title>Gu</title>
-    <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-		<%= stylesheet_link_tag 'application' %>
-  </head>
-  <body>
-		<ul id="nav">
-			<li><%= link_to Page.home.title, Page.home.path %></li>
-			<% Page.home.children.each do |page| %>
-				<li><%= link_to page.title, page.path %></li>
+
+<head>
+	<title><%=h Page.home.title %></title>
+	<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+	<%= stylesheet_link_tag 'application' %>
+</head>
+
+<body>	
+	<div id="banner">
+		<div id="bannerinner">
+			<div id="logo">FOO<small>inc</small></div>
+			<ul id="nav">
+				<%= nav_item(Page.home) %>
+				<% Page.home.children.each do |page| %>				
+				<%= nav_item(page) %>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+
+	<div id="main">
+		<div id="content">
+			<% if @page.home? %>
+			<h1>Welcome to our site&hellip;</h1>
+			<% else %>
+			<h1><%= textilize_without_paragraph @page.title %></h1>
 			<% end %>
-		</ul>
-		
-    <%= yield %>
-  </body>
+			
+			<%= yield %>
+		</div>
+	
+		<div id="side">			
+			<div class="box">
+				<h4>Side Box</h4>
+				<p class="last">
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+					sed do eiusmod tempor.
+				</p>
+			</div>
+			
+			<% unless @page.children.empty? %>	
+				<ul id="subnav">
+				<% @page.children.each do |page| %>
+				<%= nav_item(page) %>
+				<% end %>		
+				</ul>	
+			<% end %>
+		</div>
+	</div>
+
+	<div id="footer">
+		<div id="footerinner">
+			<div id="copy">
+				&copy; <%= Date.today.year %> Foo Inc 	
+			</div>
+			<div id="credits">
+				Powered by 
+				<a href="http://github.com/mkdynamic/gu">Gu</a> &amp; 
+				<a href="http://backpackit.com">Backpack</a>
+			</div>
+		</div>
+	</div>	
+</body>
+
 </html>

@@ -1,41 +1,58 @@
 class Page
   
-  attr_accessor :id, :title
-  attr_accessor :tags, :widgets, :parent, :children
-  attr_accessor :bp_data
+  attr_accessor :id, :bp_data, :titie, :tags, :widgets, :parent, :children
   
-  class << self
+  class << self    
+    def home
+      Page.find_by_trail('Home')
+    end
+    
+    def to_slug(str)
+      str.downcase.gsub(/[^A-Za-z0-9]/, ' ').strip.gsub(/\s+/, '-')
+    end
+    
+    def ext
+      '.html'
+    end
+    
     def find(id)
       bp_data = Backpack.interface.show_page(id)
       Page.new(id, bp_data)
     end
     
-    def home
-      Page.find_by_trail('Home')
-    end
-    
     def find_by_path(path)
       pages = Backpack.interface.list_pages['pages'].first['page']
-      p = pages.find { |p| ('/' + p['title'].split('>').map { |s| Page.to_slug(s) }.join('/') + Page.ext) == path }
-      return (p ? Page.find(p['id'].to_i) : nil)      
+      p = pages.detect { |p| ('/' + p['title'].split('>').map { |s| Page.to_slug(s) }.join('/') + Page.ext) == path }
+      p ? Page.find(p['id'].to_i) : nil
     end
     
+    # trail is like 'Home > Foo > Bar'. i.e. page name in Backpack
+    # case + whitespace tolerant
     def find_by_trail(trail)
       pages = Backpack.interface.list_pages['pages'].first['page']
-      p = pages.find { |p| p['title'] == trail }
-      return (p ? Page.find(p['id'].to_i) : nil)
+      p = pages.detect { |p| p['title'].downcase.squish == trail.downcase.squish }
+      p ? Page.find(p['id'].to_i) : nil
     end
     
+    # case + whitespace tolerant
     def find_children_by_trail(trail)
       pages = Backpack.interface.list_pages['pages'].first['page']
-      r = /^#{trail}\s+>\s+[^>]+$/
-      children = pages.select { |p| p['title'].match(r) }
-      return children.map { |c| Page.find(c['id'].to_i) }     
-    end
+      children = pages.select { |p| p['title'].squish.match(/^#{trail.squish}\s*>\s*[^>]+$/i) }
+      children.map { |c| Page.find(c['id'].to_i) }     
+    end    
   end
   
   def initialize(id, bp_data)
     @id, @bp_data = id, bp_data
+  end
+  
+  # compare using Backpack ID's
+  def ==(comp)
+    if !self.nil? && !comp.nil?
+      self.id == comp.id
+    else
+      super(comp)
+    end
   end
   
   def title
@@ -61,9 +78,6 @@ class Page
   def slug
     Page.to_slug(title)
   end
-  def self.to_slug(str)
-    str.downcase.gsub(/[^A-Za-z0-9]/, ' ').strip.gsub(/\s+/, '-')
-  end
 
   def path(rel = [])
     if parent == nil
@@ -78,11 +92,11 @@ class Page
     end
   end
   
-  def self.ext
-    '.html'
+  def home?
+    Page.home == self
   end
   
-  private
+private
 
   # backpack data loaders  
   def load_title

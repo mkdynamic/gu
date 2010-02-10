@@ -1,9 +1,0 @@
-<% unless list.name.blank? %>
-<h2><%=textilize list.name %></h2>
-<% end %>		
-
-<ul>
-	<% list.items.each do |item| %>
-	<li><%=textilize item.content %></li>
-	<% end %>
-</ul>

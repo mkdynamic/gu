@@ -12,7 +12,7 @@ class Backpack
   end
 
   def initialize
-    path = File.join(RAILS_ROOT, 'config/backpack.yml')
+    path = Rails.root.join('config/backpack.yml')
     config = YAML::load_file(path)
     @username, @token = config['username'], config['token']
     connect

@@ -1,0 +1,9 @@
+<% if list.name.present? && list.name != "List" %>
+<h2><%= textilize_without_paragraph list.name %></h2>
+<% end %>		
+
+<ul>
+	<% list.items.each do |item| %>
+	<li><%= linkify_and_textilize item.content %></li>
+	<% end %>
+</ul>
