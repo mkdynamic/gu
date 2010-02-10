@@ -1,8 +1,9 @@
 class Page
   
+  @@cache = {}
   attr_accessor :id, :bp_data, :titie, :tags, :widgets, :parent, :children
   
-  class << self    
+  class << self  
     def home
       Page.find_by_trail('Home')
     end
@@ -16,30 +17,42 @@ class Page
     end
     
     def find(id)
-      bp_data = Backpack.interface.show_page(id)
-      Page.new(id, bp_data)
+      fetch_or_cache_by_key("ID::" + id.to_s) do
+        bp_data = Backpack.interface.show_page(id)
+        Page.new(id, bp_data)
+      end
     end
     
     def find_by_path(path)
-      pages = Backpack.interface.list_pages['pages'].first['page']
-      p = pages.detect { |p| ('/' + p['title'].split('>').map { |s| Page.to_slug(s) }.join('/') + Page.ext) == path }
-      p ? Page.find(p['id'].to_i) : nil
+      fetch_or_cache_by_key("PATH::" + path.to_s) do
+        pages = Backpack.interface.list_pages['pages'].first['page']
+        p = pages.detect { |p| ('/' + p['title'].split('>').map { |s| Page.to_slug(s) }.join('/') + Page.ext) == path }
+        p ? Page.find(p['id'].to_i) : nil
+      end
     end
     
     # trail is like 'Home > Foo > Bar'. i.e. page name in Backpack
     # case + whitespace tolerant
     def find_by_trail(trail)
-      pages = Backpack.interface.list_pages['pages'].first['page']
-      p = pages.detect { |p| p['title'].downcase.squish == trail.downcase.squish }
-      p ? Page.find(p['id'].to_i) : nil
+      fetch_or_cache_by_key("TRAIL::" + trail.to_s) do
+        pages = Backpack.interface.list_pages['pages'].first['page']
+        p = pages.detect { |p| p['title'].downcase.squish == trail.downcase.squish }
+        p ? Page.find(p['id'].to_i) : nil
+      end
     end
     
     # case + whitespace tolerant
     def find_children_by_trail(trail)
-      pages = Backpack.interface.list_pages['pages'].first['page']
-      children = pages.select { |p| p['title'].squish.match(/^#{trail.squish}\s*>\s*[^>]+$/i) }
-      children.map { |c| Page.find(c['id'].to_i) }     
+      fetch_or_cache_by_key("CHILDREN_BY_TRAIL::" + trail.to_s) do
+        pages = Backpack.interface.list_pages['pages'].first['page']
+        children = pages.select { |p| p['title'].squish.match(/^#{trail.squish}\s*>\s*[^>]+$/i) }
+        children.map { |c| Page.find(c['id'].to_i) }   
+      end  
     end    
+    
+    def fetch_or_cache_by_key(key)
+      @@cache[key] ||= yield
+    end
   end
   
   def initialize(id, bp_data)
