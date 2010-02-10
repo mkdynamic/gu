@@ -8,6 +8,10 @@ The idea of this little rails app is to allow you to use [37signals' Backpack](h
 
 It's aimed at very simple websites, where a full blown CMS would be overkill. It takes advantage of functionality already provided in Backpack for managing content.
 
+## Demo
+
+You can see a [demo running on Heroku](http://gudemo.heroku.com).
+
 ## Setup
 
 You need to create a file called `config/backpack.yml`, as follows:
