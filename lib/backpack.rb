@@ -32,8 +32,8 @@ class Backpack
   def request(path, parameters = {}, second_try = false)
     parameters = { "token" => @token }.merge(parameters)
 
-    response = @connection.post("/ws/#{path}", parameters.to_yaml, 
-      "X-POST_DATA_FORMAT" => "yaml")
+    response = @connection.post("/ws/#{path}", parameters.to_json, 
+      "Content-Type" => "application/json")
 
     if response.code == "200"
       result = XmlSimple.xml_in(response.body)
