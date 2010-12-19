@@ -10,7 +10,7 @@ It's aimed at very simple websites, where a full blown CMS would be overkill. It
 
 ## Demo
 
-You can see a [demo running on Heroku](http://gudemo.heroku.com).
+Check out this [demo running on Heroku](http://gudemo.heroku.com).
 
 ## Setup
 
@@ -34,5 +34,5 @@ Currently the pages are simply cached using Rails built in page caching. You hav
 
 ## Credits
 
-Written by Mark Dodwell
-([Design & Code](http://madeofcode.com))
+Written by Mark Dodwell ([@madeofcode](http://twitter.com/madeofcode))
+ 
