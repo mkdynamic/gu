@@ -36,3 +36,6 @@ Currently the pages are simply cached using Rails built in page caching. You hav
 
 Written by Mark Dodwell ([@madeofcode](http://twitter.com/madeofcode))
  
+
+[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/mkdynamic/gu/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
+
